@@ -6,3 +6,6 @@ langchain-huggingface
 faiss-cpu
 pdfplumber
 unstructured
+sentence-transformers
+transformers
+torch
