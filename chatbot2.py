@@ -2,6 +2,9 @@ from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
 from langchain_openai import ChatOpenAI
 
+import os
+os.environ["STREAMLIT_DISABLE_WATCHDOG_WARNINGS"] = "true"
+
 # Define your custom prompt
 custom_prompt = PromptTemplate(
     input_variables=["context", "question"],
