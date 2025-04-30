@@ -81,7 +81,7 @@ llm = ChatOpenAI(
     openai_api_key="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"
 )
 
-advisor_chain = LLMChain(llm=llm, prompt=custom_prompt)
+advisor_chain = custom_prompt | llm
 
 qa_chain = RetrievalQA.from_chain_type(llm=llm, retriever=retriever)
 
