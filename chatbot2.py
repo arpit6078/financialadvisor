@@ -98,7 +98,6 @@ if "chat_history" not in st.session_state:
 user_input = st.chat_input("Ask a question about your finances...")
 if user_input:
     response = advisor_chain.invoke({"context": user_data_text, "question": user_input},config={"stop": None})
-    print(response)
     st.session_state.chat_history.append(("🧑", user_input))
     st.session_state.chat_history.append(("🤖", response))
 
