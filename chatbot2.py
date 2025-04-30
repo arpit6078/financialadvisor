@@ -78,7 +78,7 @@ retriever = vectorstore.as_retriever()
 
 # Step 4: QA Chain
 llm = ChatOpenAI(
-    model_name="mistralai/mistral-7b-instruct:free",
+    model_name="mistralai/mistral-7b-instruct",
     temperature=0.7,
     openai_api_base="https://openrouter.ai/api/v1",
     openai_api_key="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"
