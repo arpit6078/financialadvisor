@@ -9,3 +9,4 @@ unstructured
 sentence-transformers
 transformers
 torch
+huggingface_hub[hf_xet]
