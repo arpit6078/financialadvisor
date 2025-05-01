@@ -5,6 +5,9 @@ from langchain_openai import ChatOpenAI
 import os
 os.environ["STREAMLIT_DISABLE_WATCHDOG_WARNINGS"] = "true"
 
+from sentence_transformers import SentenceTransformer
+sbert_model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
+
 # Define your custom prompt
 custom_prompt = PromptTemplate(
     input_variables=["context", "question"],
@@ -72,10 +75,7 @@ splitter = CharacterTextSplitter(chunk_size=500, chunk_overlap=100)
 split_docs = splitter.split_documents(docs)
 
 # Step 3: Embeddings and Vectorstore
-embeddings = HuggingFaceEmbeddings(
-    model_name="sentence-transformers/all-MiniLM-L6-v2",
-    model_kwargs={"device": "cpu"}  # or "cuda" if using GPU
-)
+embeddings = HuggingFaceEmbeddings(model=sbert_model)
 vectorstore = FAISS.from_documents(split_docs, embeddings)
 retriever = vectorstore.as_retriever()
 
