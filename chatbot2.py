@@ -2,12 +2,6 @@ from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
 from langchain_openai import ChatOpenAI
 
-import os
-os.environ["STREAMLIT_DISABLE_WATCHDOG_WARNINGS"] = "true"
-
-from sentence_transformers import SentenceTransformer
-sbert_model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
-
 # Define your custom prompt
 custom_prompt = PromptTemplate(
     input_variables=["context", "question"],
@@ -75,22 +69,19 @@ splitter = CharacterTextSplitter(chunk_size=500, chunk_overlap=100)
 split_docs = splitter.split_documents(docs)
 
 # Step 3: Embeddings and Vectorstore
-embeddings = HuggingFaceEmbeddings(
-    model_name="sentence-transformers/all-MiniLM-L6-v2",
-    model_kwargs={"device": "cpu"}  # or "cuda" if GPU available
-)
+embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
 vectorstore = FAISS.from_documents(split_docs, embeddings)
 retriever = vectorstore.as_retriever()
 
 # Step 4: QA Chain
 llm = ChatOpenAI(
-    model_name="mistralai/mistral-7b-instruct",
+    model_name="mistralai/mistral-7b-instruct:free",
     temperature=0.7,
     openai_api_base="https://openrouter.ai/api/v1",
-    openai_api_key="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"
+    openai_api_key="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"
 )
 
-advisor_chain = custom_prompt | llm
+advisor_chain = LLMChain(llm=llm, prompt=custom_prompt)
 
 qa_chain = RetrievalQA.from_chain_type(llm=llm, retriever=retriever)
 
@@ -103,7 +94,8 @@ if "chat_history" not in st.session_state:
 
 user_input = st.chat_input("Ask a question about your finances...")
 if user_input:
-    response = advisor_chain.invoke({"context": user_data_text, "question": user_input},config={"stop": None})
+    response = advisor_chain.run(context=user_data_text, question=user_input)
+    print(response)
     st.session_state.chat_history.append(("🧑", user_input))
     st.session_state.chat_history.append(("🤖", response))
 
