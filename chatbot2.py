@@ -75,7 +75,10 @@ splitter = CharacterTextSplitter(chunk_size=500, chunk_overlap=100)
 split_docs = splitter.split_documents(docs)
 
 # Step 3: Embeddings and Vectorstore
-embeddings = HuggingFaceEmbeddings(model=sbert_model)
+embeddings = HuggingFaceEmbeddings(
+    model_name="sentence-transformers/all-MiniLM-L6-v2",
+    model_kwargs={"device": "cpu"}  # or "cuda" if GPU available
+)
 vectorstore = FAISS.from_documents(split_docs, embeddings)
 retriever = vectorstore.as_retriever()
 
