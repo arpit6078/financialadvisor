@@ -28,6 +28,8 @@ from langchain.chains import RetrievalQA
 from langchain_openai import ChatOpenAI
 import streamlit as st
 
+openrouter_api_key = st.secrets["OPENROUTER_API_KEY"]
+
 # Sample simulated user data (fetched from database after login)
 user_data_text = """
 Name: Rahul Mehra  
@@ -78,7 +80,7 @@ llm = ChatOpenAI(
     model_name="mistralai/mistral-7b-instruct:free",
     temperature=0.7,
     openai_api_base="https://openrouter.ai/api/v1",
-    openai_api_key="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"
+    openai_api_key=openrouter_api_key
 )
 
 advisor_chain = LLMChain(llm=llm, prompt=custom_prompt)
