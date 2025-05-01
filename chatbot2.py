@@ -78,7 +78,7 @@ llm = ChatOpenAI(
     model_name="mistralai/mistral-7b-instruct:free",
     temperature=0.7,
     openai_api_base="https://openrouter.ai/api/v1",
-    openai_api_key="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"
+    openai_api_key="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"
 )
 
 advisor_chain = LLMChain(llm=llm, prompt=custom_prompt)
